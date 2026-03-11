@@ -1,0 +1,103 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Bag shadow -->
+    <path android:fillColor="#20000000"
+        android:pathData="M32,108 Q60,114 88,108 Q88,102 60,102 Q32,102 32,108 Z"/>
+
+    <!-- Bag body -->
+    <path android:fillColor="#FFD700"
+        android:pathData="M25,55 Q22,35 60,30 Q98,35 95,55 L92,95 Q90,112 60,112 Q30,112 28,95 Z"/>
+
+    <!-- Bag shine -->
+    <path android:fillColor="#40FFFFFF"
+        android:pathData="M35,45 Q50,35 65,40 Q55,45 48,58 Q40,55 35,45 Z"/>
+
+    <!-- Bag neck -->
+    <path android:fillColor="#FFC107"
+        android:pathData="M45,30 Q48,18 60,16 Q72,18 75,30 Q68,26 60,26 Q52,26 45,30 Z"/>
+
+    <!-- Bag tie -->
+    <path android:fillColor="#FF8F00"
+        android:pathData="M48,28 Q60,22 72,28 L70,34 Q60,30 50,34 Z"/>
+
+    <!-- Dollar sign vertical bar -->
+    <path android:strokeColor="#FF8F00" android:strokeWidth="4" android:strokeLineCap="round"
+        android:fillColor="#00000000" android:pathData="M60,55 L60,85"/>
+    <!-- Dollar sign S curve -->
+    <path android:strokeColor="#FF8F00" android:strokeWidth="3.5" android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M50,62 Q48,58 55,56 Q62,54 65,60 Q68,66 60,68 Q52,70 55,76 Q58,82 65,80 Q72,78 70,74"/>
+
+    <!-- Left eye white -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M41,45 Q47,39 53,45 Q53,51 47,51 Q41,51 41,45 Z"/>
+    <!-- Left pupil -->
+    <path android:fillColor="#2D1B00"
+        android:pathData="M44,45 Q47,42 50,45 Q50,48 47,48 Q44,48 44,45 Z"/>
+    <!-- Left eye shine -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M48,43 Q49.5,42 50,43 Q50,44 49,44 Q48,44 48,43 Z"/>
+
+    <!-- Right eye white -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M67,45 Q73,39 79,45 Q79,51 73,51 Q67,51 67,45 Z"/>
+    <!-- Right pupil -->
+    <path android:fillColor="#2D1B00"
+        android:pathData="M70,45 Q73,42 76,45 Q76,48 73,48 Q70,48 70,45 Z"/>
+    <!-- Right eye shine -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M74,43 Q75.5,42 76,43 Q76,44 75,44 Q74,44 74,43 Z"/>
+
+    <!-- Big smile -->
+    <path android:strokeColor="#2D1B00" android:strokeWidth="3" android:strokeLineCap="round"
+        android:fillColor="#00000000" android:pathData="M44,52 Q60,62 76,52"/>
+    <path android:fillColor="#FF6B6B"
+        android:pathData="M44,52 Q60,61 76,52 Q60,57 44,52 Z"/>
+
+    <!-- Rosy cheeks -->
+    <path android:fillColor="#30FF6B6B"
+        android:pathData="M33,50 Q40,46 40,52 Q40,56 33,54 Z"/>
+    <path android:fillColor="#30FF6B6B"
+        android:pathData="M80,50 Q87,46 87,52 Q87,56 80,54 Z"/>
+
+    <!-- Left arm -->
+    <path android:fillColor="#FFD700"
+        android:pathData="M25,65 Q12,60 10,70 Q12,80 25,75 Z"/>
+    <!-- Left hand -->
+    <path android:fillColor="#FFC107"
+        android:pathData="M10,67 Q5,68 5,72 Q5,76 10,76 Q14,76 14,72 Q14,68 10,67 Z"/>
+
+    <!-- Right arm -->
+    <path android:fillColor="#FFD700"
+        android:pathData="M95,65 Q108,60 110,70 Q108,80 95,75 Z"/>
+    <!-- Right hand -->
+    <path android:fillColor="#FFC107"
+        android:pathData="M110,67 Q115,68 115,72 Q115,76 110,76 Q106,76 106,72 Q106,68 110,67 Z"/>
+
+    <!-- Coin left -->
+    <path android:fillColor="#FFD700"
+        android:pathData="M8,23 Q15,17 22,23 Q22,30 15,30 Q8,30 8,23 Z"/>
+    <path android:strokeColor="#FF8F00" android:strokeWidth="1.5"
+        android:fillColor="#00000000" android:pathData="M13,27 L13,20 M17,27 L17,20"/>
+
+    <!-- Coin right -->
+    <path android:fillColor="#FFD700"
+        android:pathData="M99,19 Q105,14 111,19 Q111,25 105,25 Q99,25 99,19 Z"/>
+    <path android:strokeColor="#FF8F00" android:strokeWidth="1.5"
+        android:fillColor="#00000000" android:pathData="M103,23 L103,16 M107,23 L107,16"/>
+
+    <!-- Small coin bottom left -->
+    <path android:fillColor="#FFC107"
+        android:pathData="M13,87 Q18,83 23,87 Q23,92 18,92 Q13,92 13,87 Z"/>
+
+    <!-- Sparkles -->
+    <path android:fillColor="#FFD700"
+        android:pathData="M100,90 L102,84 L104,90 L98,87 L106,87 Z"/>
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M20,10 L21,7 L22,10 L19,8 L23,8 Z"/>
+
+</vector>

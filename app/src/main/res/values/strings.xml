@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StreamIQ</string>
+    <string name="app_tagline">Income Stream Tracker</string>
+    <string name="privacy_note">All data stays on your device. No cloud. No ads. Ever.</string>
+</resources>
