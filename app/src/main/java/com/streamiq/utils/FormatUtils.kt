@@ -116,16 +116,7 @@ fun scoreColor(score: Int): Color = when {
     else        -> Color(0xFFFF5252)
 }
 
-// ── Tax calculator (India-specific) ─────────────────────────────────────────
-fun calculateTaxJar(totalEarned: Double, taxRate: Double = 0.30): Double =
-    totalEarned * taxRate
 
-fun taxAdvice(annualIncome: Double): String = when {
-    annualIncome < 300000  -> "Below tax threshold. Keep logging to stay informed."
-    annualIncome < 500000  -> "Old regime: 5% slab. New regime: Nil. File ITR-1."
-    annualIncome < 1000000 -> "20% slab (old) / 10–15% (new). Consider advance tax."
-    else                   -> "30% slab. Pay advance tax quarterly. Consult a CA."
-}
 
 // ── Forecast engine ──────────────────────────────────────────────────────────
 fun forecastMonthEnd(
