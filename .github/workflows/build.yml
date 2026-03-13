@@ -26,8 +26,27 @@ jobs:
           gradle wrapper --gradle-version 8.9 --distribution-type bin
           chmod +x ./gradlew
 
-      - name: Build Release AAB
-        run: ./gradlew bundleRelease --stacktrace
+      - name: Generate Keystore
+        run: |
+          keytool -genkeypair \
+            -alias streamiq \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -keystore streamiq.keystore \
+            -storepass streamiq123 \
+            -keypass streamiq123 \
+            -dname "CN=StreamIQ, OU=App, O=StreamIQ, L=City, S=State, C=IN" \
+            -noprompt
+
+      - name: Build Signed Release AAB
+        run: |
+          ./gradlew bundleRelease \
+            -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/streamiq.keystore \
+            -Pandroid.injected.signing.store.password=streamiq123 \
+            -Pandroid.injected.signing.key.alias=streamiq \
+            -Pandroid.injected.signing.key.password=streamiq123 \
+            --stacktrace
 
       - name: Upload AAB
         uses: actions/upload-artifact@v4
