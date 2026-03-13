@@ -1,11 +1,5 @@
 package com.streamiq.ui.screens
 
-// ═══════════════════════════════════════════════════════════════════════════
-//  TAX JAR — StreamIQ's India-specific unicorn feature
-//  Auto-sets aside 30% of every rupee earned. Zero apps do this for India.
-//  Will get StreamIQ featured in Finshots, CA YouTube channels, Zerodha Varsity
-// ═══════════════════════════════════════════════════════════════════════════
-
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
@@ -38,23 +32,16 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
     val textPrimary = if (isDark) TextPrimary else LightTextPrimary
     val textSecondary = if (isDark) TextSecondary else LightTextSecondary
 
-    var taxRate by remember { mutableStateOf(30f) }
-    var showBreakdown by remember { mutableStateOf(false) }
-
+    var taxRate by remember { mutableStateOf(25f) }
     val totalMonth = uiState.totalMonth
     val totalAllTime = uiState.summaries.sumOf { it.allTimeAmount }
-    val annualEstimate = totalMonth * 12
     val taxJarMonth = calculateTaxJar(totalMonth, taxRate / 100.0)
     val taxJarAllTime = calculateTaxJar(totalAllTime, taxRate / 100.0)
     val netMonth = totalMonth - taxJarMonth
-    val advice = taxAdvice(annualEstimate)
     val currentMonth = LocalDate.now().month.name.lowercase().replaceFirstChar { it.uppercase() }
-    val fillPercent = (taxRate / 100f).coerceIn(0f, 1f)
-
-    // Animated jar fill
     val animatedFill by animateFloatAsState(
-        targetValue = fillPercent,
-        animationSpec = tween(1000, easing = FastOutSlowInEasing),
+        targetValue = (taxRate / 100f).coerceIn(0f, 1f),
+        animationSpec = tween(800, easing = FastOutSlowInEasing),
         label = "jar"
     )
 
@@ -85,8 +72,7 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
             Card(
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFFFFD700).copy(alpha = 0.1f)
-                )
+                    containerColor = Color(0xFFFFD700).copy(alpha = 0.1f))
             ) {
                 Row(
                     modifier = Modifier.padding(16.dp),
@@ -99,8 +85,9 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                             fontSize = 16.sp, color = textPrimary)
                         Spacer(Modifier.height(4.dp))
                         Text(
-                            "Every rupee you earn, StreamIQ silently sets aside ${taxRate.toInt()}% for taxes. " +
-                            "So you never get a surprise bill from the IT department.",
+                            "Set your local tax rate below. StreamIQ automatically " +
+                            "calculates how much to set aside from every rupee you earn — " +
+                            "so tax time is never a surprise.",
                             fontSize = 13.sp, color = textSecondary, lineHeight = 18.sp
                         )
                     }
@@ -112,8 +99,7 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = if (isDark) Card else LightCard
-                )
+                    containerColor = if (isDark) Card else LightCard)
             ) {
                 Column(
                     modifier = Modifier.padding(24.dp),
@@ -125,7 +111,6 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
 
                     Spacer(Modifier.height(16.dp))
 
-                    // Big jar amount
                     Text(
                         formatMoneyFull(taxJarMonth),
                         fontSize = 48.sp,
@@ -137,7 +122,7 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
 
                     Spacer(Modifier.height(20.dp))
 
-                    // Visual jar fill bar
+                    // Jar fill bar
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -167,7 +152,7 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
 
                     Spacer(Modifier.height(16.dp))
 
-                    // Net take-home
+                    // Gross / Tax / Net
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
@@ -195,7 +180,7 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                 }
             }
 
-            // Tax rate slider
+            // Tax rate slider — user sets their own rate
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
@@ -207,17 +192,21 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text("Tax Rate", fontWeight = FontWeight.SemiBold,
-                            color = textPrimary)
+                        Column {
+                            Text("Your Tax Rate", fontWeight = FontWeight.SemiBold,
+                                color = textPrimary)
+                            Text("Set based on your local tax laws",
+                                fontSize = 11.sp, color = textSecondary)
+                        }
                         Text("${taxRate.toInt()}%",
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFFD700), fontSize = 18.sp)
+                            color = Color(0xFFFFD700), fontSize = 24.sp)
                     }
+                    Spacer(Modifier.height(8.dp))
                     Slider(
                         value = taxRate,
                         onValueChange = { taxRate = it },
-                        valueRange = 5f..40f,
-                        steps = 6,
+                        valueRange = 5f..50f,
                         colors = SliderDefaults.colors(
                             thumbColor = Color(0xFFFFD700),
                             activeTrackColor = Color(0xFFFFD700),
@@ -228,61 +217,67 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text("5% (low income)", fontSize = 10.sp, color = textSecondary)
-                        Text("30% (high income)", fontSize = 10.sp, color = textSecondary)
+                        Text("5%", fontSize = 11.sp, color = textSecondary)
+                        Text("50%", fontSize = 11.sp, color = textSecondary)
+                    }
+
+                    Spacer(Modifier.height(12.dp))
+
+                    // Common rate chips for quick selection
+                    Text("Common rates:", fontSize = 12.sp, color = textSecondary)
+                    Spacer(Modifier.height(8.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        listOf(15, 20, 25, 30, 40).forEach { rate ->
+                            val isSelected = taxRate.toInt() == rate
+                            Box(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(20.dp))
+                                    .background(
+                                        if (isSelected) Color(0xFFFFD700)
+                                        else Color(0xFFFFD700).copy(0.15f)
+                                    )
+                                    .clickable { taxRate = rate.toFloat() }
+                                    .padding(horizontal = 12.dp, vertical = 6.dp)
+                            ) {
+                                Text("$rate%",
+                                    fontSize = 13.sp,
+                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                                    color = if (isSelected) Color.Black else Color(0xFFFFD700))
+                            }
+                        }
                     }
                 }
             }
 
-            // India tax slabs card
+            // General advice card — no country-specific numbers
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFF1565C0).copy(alpha = 0.15f))
+                    containerColor = Accent.copy(alpha = 0.08f))
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically) {
-                        Text("🇮🇳", fontSize = 20.sp)
-                        Text("Your Tax Estimate", fontWeight = FontWeight.Bold,
-                            color = textPrimary)
-                    }
+                    Text("💡 Why set aside tax as you earn?",
+                        fontWeight = FontWeight.Bold, fontSize = 14.sp, color = textPrimary)
                     Spacer(Modifier.height(8.dp))
-                    Text("Annual estimate: ${formatMoney(annualEstimate)}",
-                        fontSize = 13.sp, color = textSecondary)
-                    Spacer(Modifier.height(6.dp))
-                    Text(advice, fontSize = 13.sp, color = textPrimary, lineHeight = 18.sp)
-                    Spacer(Modifier.height(12.dp))
-
-                    // Quick slabs
                     listOf(
-                        Triple("Up to ₹3L", "Nil", Color(0xFF00E676)),
-                        Triple("₹3L – ₹7L", "5%", Color(0xFF69F0AE)),
-                        Triple("₹7L – ₹10L", "10%", Color(0xFFFFD700)),
-                        Triple("₹10L – ₹12L", "15%", Color(0xFFFF9800)),
-                        Triple("Above ₹12L", "30%", Color(0xFFFF5252))
-                    ).forEach { (slab, rate, color) ->
+                        "Most countries require self-employed people to pay tax periodically — not just at year end.",
+                        "Setting aside a percentage with every payment means no nasty surprises.",
+                        "Check your local tax authority for the right rate — a tax professional can advise.",
+                        "The jar balance shown here is a guide. Always confirm with your accountant."
+                    ).forEach { tip ->
                         Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 3.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text(slab, fontSize = 12.sp, color = textSecondary)
-                            Text(rate, fontSize = 12.sp,
-                                fontWeight = FontWeight.Bold, color = color)
+                            Text("•", color = Accent, fontSize = 14.sp)
+                            Text(tip, fontSize = 12.sp, color = textSecondary, lineHeight = 17.sp)
                         }
                     }
-
-                    Spacer(Modifier.height(8.dp))
-                    Text("New tax regime (FY 2024–25). Always consult a CA for final filing.",
-                        fontSize = 10.sp, color = textSecondary,
-                        fontStyle = androidx.compose.ui.text.font.FontStyle.Italic)
                 }
             }
 
-            // All-time tax reserve
+            // All-time reserve
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
@@ -299,47 +294,22 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                         Text(formatMoneyFull(taxJarAllTime),
                             fontSize = 22.sp, fontWeight = FontWeight.Bold,
                             color = Color(0xFFFFD700))
+                        Text("at ${taxRate.toInt()}% rate",
+                            fontSize = 11.sp, color = textSecondary)
                     }
                     Text("🏺", fontSize = 36.sp)
                 }
             }
 
-            // Quarterly reminder
-            val currentQuarter = when (LocalDate.now().monthValue) {
-                in 4..6   -> "Q1 (Apr–Jun)"
-                in 7..9   -> "Q2 (Jul–Sep)"
-                in 10..12 -> "Q3 (Oct–Dec)"
-                else      -> "Q4 (Jan–Mar)"
-            }
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFFFF9800).copy(alpha = 0.1f))
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text("⏰ Advance Tax Reminder", fontWeight = FontWeight.Bold,
-                        color = textPrimary, fontSize = 14.sp)
-                    Spacer(Modifier.height(6.dp))
-                    Text("You're in $currentQuarter. India requires advance tax payments " +
-                         "if annual liability > ₹10,000. Pay by 15th of last month of each quarter.",
-                        fontSize = 12.sp, color = textSecondary, lineHeight = 17.sp)
-                    Spacer(Modifier.height(8.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        listOf("15 Jun", "15 Sep", "15 Dec", "15 Mar").forEach { date ->
-                            Box(
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(8.dp))
-                                    .background(Color(0xFFFF9800).copy(0.2f))
-                                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                            ) {
-                                Text(date, fontSize = 11.sp,
-                                    color = Color(0xFFFF9800), fontWeight = FontWeight.SemiBold)
-                            }
-                        }
-                    }
-                }
-            }
+            // Disclaimer
+            Text(
+                "This is an estimate only. Consult a qualified tax professional for advice specific to your situation and country.",
+                fontSize = 11.sp,
+                color = textSecondary,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+            )
 
             Spacer(Modifier.height(40.dp))
         }
