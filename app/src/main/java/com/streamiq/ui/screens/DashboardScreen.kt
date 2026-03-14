@@ -43,7 +43,6 @@ fun DashboardScreen(
     onInsights: () -> Unit = {},
     onExport: () -> Unit = {},
     onCurrency: () -> Unit = {},
-    onPro: () -> Unit = {},
     onPro: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -258,7 +257,7 @@ fun DashboardScreen(
             // ── UNICORN FEATURE GRID ─────────────────────────────────────
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Pro upgrade banner (only show if not Pro)
+            // Pro upgrade banner
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -323,7 +322,7 @@ fun DashboardScreen(
                         "Unlock AI & Voice", Gold, onPro,
                         Modifier.weight(1f))
                     UnicornFeatureCard("💱", "Currency",
-                        "₹ $ € £ and more", Color(0xFF03A9F4), onCurrency,
+                        "₹ \$ € £ and more", Color(0xFF03A9F4), onCurrency,
                         Modifier.weight(1f))
                 }
             }
@@ -431,7 +430,6 @@ fun StreamCard(summary: StreamSummary) {
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Type icon
         Box(
             modifier = Modifier
                 .size(40.dp)
@@ -447,7 +445,6 @@ fun StreamCard(summary: StreamSummary) {
         Column(modifier = Modifier.weight(1f)) {
             Text(summary.stream.name, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = TextPrimary)
             Text(summary.stream.type.label, fontSize = 11.sp, color = TextSecondary)
-            // Goal progress bar
             if (summary.stream.monthlyGoal > 0) {
                 val progress = (summary.monthAmount / summary.stream.monthlyGoal).coerceIn(0.0, 1.0).toFloat()
                 Spacer(modifier = Modifier.height(4.dp))
@@ -518,10 +515,6 @@ fun EmptyStreamsCard(onAddStream: () -> Unit) {
         }
     }
 }
-
-
-
-
 
 @Composable
 fun UnicornFeatureCard(
