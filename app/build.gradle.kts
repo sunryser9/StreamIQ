@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.streamiq.app"
+    namespace = "com.streamiq"
     compileSdk = 35
 
     defaultConfig {
