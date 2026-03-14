@@ -227,3 +227,50 @@ class StreamIQRepository(private val context: Context) {
         return arr.toString()
     }
 }
+
+    // ── Expense tracking ─────────────────────────────────────────────────────
+    private val EXPENSES_KEY = stringPreferencesKey("daily_expenses")
+
+    suspend fun saveExpenses(date: String, expenses: Map<String, Double>) {
+        context.dataStore.edit { prefs ->
+            val current = parseExpenseMap(prefs[EXPENSES_KEY] ?: "{}")
+            current[date] = expenses
+            prefs[EXPENSES_KEY] = expenseMapToJson(current)
+        }
+    }
+
+    fun getExpensesFlow(): Flow<Map<String, Map<String, Double>>> =
+        context.dataStore.data.map { prefs ->
+            parseExpenseMap(prefs[EXPENSES_KEY] ?: "{}")
+        }
+
+    fun getTotalExpensesMonth(expenseMap: Map<String, Map<String, Double>>): Double {
+        val thisMonth = java.time.LocalDate.now().toString().substring(0, 7)
+        return expenseMap.entries
+            .filter { it.key.startsWith(thisMonth) }
+            .sumOf { entry -> entry.value.values.sum() }
+    }
+
+    private fun parseExpenseMap(json: String): MutableMap<String, Map<String, Double>> {
+        return try {
+            val obj = org.json.JSONObject(json)
+            val result = mutableMapOf<String, Map<String, Double>>()
+            obj.keys().forEach { date ->
+                val dayObj = obj.getJSONObject(date)
+                val dayMap = mutableMapOf<String, Double>()
+                dayObj.keys().forEach { cat -> dayMap[cat] = dayObj.getDouble(cat) }
+                result[date] = dayMap
+            }
+            result
+        } catch (e: Exception) { mutableMapOf() }
+    }
+
+    private fun expenseMapToJson(map: Map<String, Map<String, Double>>): String {
+        val obj = org.json.JSONObject()
+        map.forEach { (date, cats) ->
+            val dayObj = org.json.JSONObject()
+            cats.forEach { (cat, amt) -> dayObj.put(cat, amt) }
+            obj.put(date, dayObj)
+        }
+        return obj.toString()
+    }

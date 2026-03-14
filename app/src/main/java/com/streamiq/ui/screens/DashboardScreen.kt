@@ -42,7 +42,9 @@ fun DashboardScreen(
     onForecast: () -> Unit = {},
     onInsights: () -> Unit = {},
     onExport: () -> Unit = {},
-    onCurrency: () -> Unit = {}
+    onCurrency: () -> Unit = {},
+    onPro: () -> Unit = {},
+    onPro: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val today = LocalDate.now().format(DateTimeFormatter.ofPattern("EEE, MMM d"))
@@ -153,9 +155,15 @@ fun DashboardScreen(
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         StatChip(
-                            label = "THIS MONTH",
+                            label = "REVENUE",
                             value = formatMoney(uiState.totalMonth),
                             color = Accent,
+                            modifier = Modifier.weight(1f)
+                        )
+                        StatChip(
+                            label = "NET PROFIT",
+                            value = formatMoney(uiState.netProfitMonth),
+                            color = if (uiState.netProfitMonth >= uiState.totalMonth * 0.5) Green else Gold,
                             modifier = Modifier.weight(1f)
                         )
                         StatChip(
@@ -164,12 +172,23 @@ fun DashboardScreen(
                             color = Gold,
                             modifier = Modifier.weight(1f)
                         )
-                        StatChip(
-                            label = "STREAMS",
-                            value = "${uiState.streams.size}",
-                            color = FreelanceColor,
-                            modifier = Modifier.weight(1f)
-                        )
+                    }
+                    // Show expense warning if expenses exist
+                    if (uiState.totalExpensesMonth > 0) {
+                        Spacer(Modifier.height(8.dp))
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(Red.copy(0.08f))
+                                .padding(horizontal = 12.dp, vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text("Expenses this month",
+                                fontSize = 12.sp, color = TextSecondary)
+                            Text("−${formatMoney(uiState.totalExpensesMonth)}",
+                                fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Red)
+                        }
                     }
                 }
             }
@@ -238,6 +257,40 @@ fun DashboardScreen(
 
             // ── UNICORN FEATURE GRID ─────────────────────────────────────
             Spacer(modifier = Modifier.height(12.dp))
+
+            // Pro upgrade banner (only show if not Pro)
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .clickable { onPro() },
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFF9C27B0).copy(0.12f)),
+                border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF9C27B0).copy(0.4f))
+            ) {
+                Row(
+                    modifier = Modifier.padding(14.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalAlignment = Alignment.CenterVertically) {
+                        Text("⚡", fontSize = 22.sp)
+                        Column {
+                            Text("Unlock StreamIQ Pro",
+                                fontWeight = FontWeight.Bold, fontSize = 14.sp,
+                                color = TextPrimary)
+                            Text("AI Insights · Voice · Forecast · \$4.99/mo",
+                                fontSize = 12.sp, color = Color(0xFFCE93D8))
+                        }
+                    }
+                    Text("→", fontSize = 18.sp, color = Color(0xFF9C27B0),
+                        fontWeight = FontWeight.Bold)
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
             Text("TOOLS", fontSize = 11.sp, fontWeight = FontWeight.Bold,
                 color = TextMuted, letterSpacing = 2.sp,
                 modifier = Modifier.padding(horizontal = 24.dp))
@@ -255,8 +308,8 @@ fun DashboardScreen(
                         Modifier.weight(1f))
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    UnicornFeatureCard("🏺", "Tax Jar",
-                        "Auto-save 30% for taxes", Gold, onTaxJar,
+                    UnicornFeatureCard("🏺", "Tax Estimator",
+                        "Calculates tax to set aside", Gold, onTaxJar,
                         Modifier.weight(1f))
                     UnicornFeatureCard("🧠", "AI Insights",
                         "Personalised tips", Green, onInsights,
@@ -265,6 +318,9 @@ fun DashboardScreen(
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     UnicornFeatureCard("📊", "Export CSV",
                         "To Excel or Sheets", Color(0xFF4CAF50), onExport,
+                        Modifier.weight(1f))
+                    UnicornFeatureCard("⚡", "Go Pro",
+                        "Unlock AI & Voice", Gold, onPro,
                         Modifier.weight(1f))
                     UnicornFeatureCard("💱", "Currency",
                         "₹ $ € £ and more", Color(0xFF03A9F4), onCurrency,

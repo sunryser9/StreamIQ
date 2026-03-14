@@ -49,7 +49,7 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
         containerColor = bg,
         topBar = {
             TopAppBar(
-                title = { Text("Tax Jar 🏺", color = textPrimary, fontWeight = FontWeight.Bold) },
+                title = { Text("Tax Estimator 🧾", color = textPrimary, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, "Back", tint = textSecondary)
@@ -81,12 +81,12 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                 ) {
                     Text("🏺", fontSize = 28.sp)
                     Column {
-                        Text("Your Tax Jar", fontWeight = FontWeight.Bold,
+                        Text("Your Tax Estimator", fontWeight = FontWeight.Bold,
                             fontSize = 16.sp, color = textPrimary)
                         Spacer(Modifier.height(4.dp))
                         Text(
                             "Set your local tax rate below. StreamIQ automatically " +
-                            "calculates how much to set aside from every rupee you earn — " +
+                            "calculates how much to estimated from every rupee you earn — " +
                             "so tax time is never a surprise.",
                             fontSize = 13.sp, color = textSecondary, lineHeight = 18.sp
                         )
@@ -105,7 +105,7 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                     modifier = Modifier.padding(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text("$currentMonth Tax Reserve",
+                    Text("$currentMonth Tax Estimate",
                         fontSize = 13.sp, color = textSecondary,
                         fontWeight = FontWeight.SemiBold, letterSpacing = 0.5.sp)
 
@@ -117,7 +117,7 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFFFFD700)
                     )
-                    Text("set aside from ${formatMoney(totalMonth)} earned",
+                    Text("estimated from ${formatMoney(totalMonth)} earned",
                         fontSize = 13.sp, color = textSecondary)
 
                     Spacer(Modifier.height(20.dp))
@@ -142,7 +142,7 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                                 )
                         )
                         Text(
-                            "${taxRate.toInt()}% reserved",
+                            "${taxRate.toInt()}% estimated",
                             modifier = Modifier.align(Alignment.Center),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
@@ -165,7 +165,7 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                         Text("−", fontSize = 24.sp, color = textSecondary,
                             modifier = Modifier.align(Alignment.CenterVertically))
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Tax Reserve", fontSize = 11.sp, color = textSecondary)
+                            Text("Tax Estimate", fontSize = 11.sp, color = textSecondary)
                             Text(formatMoney(taxJarMonth), fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold, color = Color(0xFFFFD700))
                         }
@@ -290,7 +290,7 @@ fun TaxJarScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column {
-                        Text("All-Time Tax Reserve", fontSize = 13.sp, color = textSecondary)
+                        Text("All-Time Tax Estimate", fontSize = 13.sp, color = textSecondary)
                         Text(formatMoneyFull(taxJarAllTime),
                             fontSize = 22.sp, fontWeight = FontWeight.Bold,
                             color = Color(0xFFFFD700))

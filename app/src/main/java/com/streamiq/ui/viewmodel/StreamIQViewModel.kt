@@ -16,13 +16,16 @@ data class StreamIQUiState(
     val summaries: List<StreamSummary> = emptyList(),
     val totalToday: Double = 0.0,
     val totalMonth: Double = 0.0,
+    val totalExpensesMonth: Double = 0.0,
     val overallStreak: Int = 0,
     val bestStream: StreamSummary? = null,
     val onboardingComplete: Boolean = false,
     val isLoading: Boolean = true,
     val isDarkTheme: Boolean = true,
     val currency: AppCurrency = AppCurrency.USD
-)
+) {
+    val netProfitMonth: Double get() = totalMonth - totalExpensesMonth
+}
 
 class StreamIQViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -35,8 +38,9 @@ class StreamIQViewModel(application: Application) : AndroidViewModel(application
             combine(
                 repo.getStreamsFlow(),
                 repo.getEntriesFlow(),
-                repo.getOnboardingFlow()
-            ) { streams, entries, onboarding ->
+                repo.getOnboardingFlow(),
+                repo.getExpensesFlow()
+            ) { streams, entries, onboarding, expenses ->
                 val summaries = repo.getSummaries(streams, entries)
                 StreamIQUiState(
                     streams = streams,
@@ -44,6 +48,7 @@ class StreamIQViewModel(application: Application) : AndroidViewModel(application
                     summaries = summaries,
                     totalToday = repo.getTotalToday(entries),
                     totalMonth = repo.getTotalMonth(entries),
+                    totalExpensesMonth = repo.getTotalExpensesMonth(expenses),
                     overallStreak = repo.getOverallStreak(entries),
                     bestStream = repo.getBestStream(summaries),
                     onboardingComplete = onboarding,
@@ -57,11 +62,7 @@ class StreamIQViewModel(application: Application) : AndroidViewModel(application
 
     fun addStream(name: String, type: StreamType) {
         viewModelScope.launch {
-            repo.saveStream(IncomeStream(
-                id = UUID.randomUUID().toString(),
-                name = name,
-                type = type
-            ))
+            repo.saveStream(IncomeStream(id = UUID.randomUUID().toString(), name = name, type = type))
         }
     }
 
@@ -98,6 +99,12 @@ class StreamIQViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    fun logExpenses(expenses: Map<String, Double>) {
+        viewModelScope.launch {
+            repo.saveExpenses(java.time.LocalDate.now().toString(), expenses)
+        }
+    }
+
     fun completeOnboarding() {
         viewModelScope.launch { repo.setOnboardingComplete() }
     }
@@ -118,7 +125,6 @@ class StreamIQViewModel(application: Application) : AndroidViewModel(application
             .sumOf { it.amount }
     }
 
-    // Dead stream detection — streams with no income in 14+ days
     fun getDeadStreams(): List<StreamSummary> {
         val cutoff = java.time.LocalDate.now().minusDays(14).toString()
         return _uiState.value.summaries.filter { summary ->
@@ -128,4 +134,29 @@ class StreamIQViewModel(application: Application) : AndroidViewModel(application
             lastEntry == null || lastEntry.date < cutoff
         }
     }
+}
+
+    // ── Pro gate ─────────────────────────────────────────────────────────────
+    // In production: connect to Google Play Billing
+    // For now: isPro flag (set to false for real launch, true for testing)
+    private val _isPro = mutableStateOf(false)
+    val isPro: Boolean get() = _isPro.value
+
+    // Free tier limits
+    val maxFreeStreams = 3
+
+    fun isProFeature(feature: ProFeature): Boolean = when (feature) {
+        ProFeature.AI_INSIGHTS    -> isPro
+        ProFeature.VOICE_LOGGING  -> isPro
+        ProFeature.FORECAST       -> isPro
+        ProFeature.STREAM_SCORE   -> isPro
+        ProFeature.UNLIMITED_STREAMS -> isPro
+    }
+
+    fun canAddStream(): Boolean =
+        isPro || _uiState.value.streams.size < maxFreeStreams
+}
+
+enum class ProFeature {
+    AI_INSIGHTS, VOICE_LOGGING, FORECAST, STREAM_SCORE, UNLIMITED_STREAMS
 }

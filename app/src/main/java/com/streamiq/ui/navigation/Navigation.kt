@@ -15,12 +15,14 @@ sealed class Screen(val route: String) {
     object ShareCard   : Screen("share_card")
     object VoiceBot    : Screen("voice_bot")
     // ── Unicorn screens ──────────────────────────────────────────────
-    object TaxJar      : Screen("tax_jar")
+    object TaxJar: Screen("tax_jar")
     object StreamScore : Screen("stream_score")
     object Forecast    : Screen("forecast")
     object Insights    : Screen("insights")
     object Export      : Screen("export")
     object Currency    : Screen("currency")
+    object Pro         : Screen("pro")
+    object Pro         : Screen("pro")
 }
 
 @Composable
@@ -55,7 +57,9 @@ fun StreamIQNavHost(
                 onForecast    = { navController.navigate(Screen.Forecast.route) },
                 onInsights    = { navController.navigate(Screen.Insights.route) },
                 onExport      = { navController.navigate(Screen.Export.route) },
-                onCurrency    = { navController.navigate(Screen.Currency.route) }
+                onCurrency    = { navController.navigate(Screen.Currency.route) },
+                onPro         = { navController.navigate(Screen.Pro.route) },
+                onPro       = { navController.navigate(Screen.Pro.route) }
             )
         }
         composable(Screen.LogToday.route) {
@@ -87,6 +91,12 @@ fun StreamIQNavHost(
         }
         composable(Screen.Export.route) {
             ExportScreen(viewModel = viewModel, onBack = { navController.popBackStack() })
+        }
+        composable(Screen.Pro.route) {
+            ProScreen(viewModel = viewModel, onBack = { navController.popBackStack() })
+        }
+        composable(Screen.Pro.route) {
+            ProScreen(viewModel = viewModel, onBack = { navController.popBackStack() })
         }
         composable(Screen.Currency.route) {
             CurrencyScreen(viewModel = viewModel, onBack = { navController.popBackStack() })

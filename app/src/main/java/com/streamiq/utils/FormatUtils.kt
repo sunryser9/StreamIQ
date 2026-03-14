@@ -115,12 +115,11 @@ fun scoreColor(score: Int): Color = when {
     score >= 20 -> Color(0xFFFF9800)
     else        -> Color(0xFFFF5252)
 }
+
+
+
 // ── Tax Jar engine ───────────────────────────────────────────────────────
 fun calculateTaxJar(income: Double, rate: Double): Double = income * rate
-
-// ── Forecast engine ──────────────────────────────────────────────────────
-
-
 
 // ── Forecast engine ──────────────────────────────────────────────────────────
 fun forecastMonthEnd(
