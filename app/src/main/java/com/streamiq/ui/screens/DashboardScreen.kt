@@ -85,7 +85,7 @@ fun DashboardScreen(
                         Column {
                             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                 Image(
-                                 painter = painterResource(com.streamiq.app.R.drawable.mascot_bolt),  
+                                painter = painterResource(com.streamiq.R.drawable.mascot_bolt),
                                     contentDescription = "StreamIQ mascot",
                                     modifier = Modifier.size(36.dp)
                                 )
