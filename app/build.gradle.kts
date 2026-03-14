@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.streamiq.app "
+    namespace = "com.streamiq.app"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.streamiq.app "
+        applicationId = "com.streamiq.app"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
