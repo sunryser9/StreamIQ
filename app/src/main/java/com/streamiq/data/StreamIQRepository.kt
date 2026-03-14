@@ -53,6 +53,7 @@ class StreamIQRepository(private val context: Context) {
     private val STREAMS_KEY = stringPreferencesKey("streams")
     private val ENTRIES_KEY = stringPreferencesKey("entries")
     private val ONBOARDING_KEY = booleanPreferencesKey("onboarding_complete")
+    private val EXPENSES_KEY = stringPreferencesKey("daily_expenses")
 
     // --- Streams ---
     fun getStreamsFlow(): Flow<List<IncomeStream>> =
@@ -166,6 +167,27 @@ class StreamIQRepository(private val context: Context) {
         return streak
     }
 
+    // --- Expense tracking ---
+    suspend fun saveExpenses(date: String, expenses: Map<String, Double>) {
+        context.dataStore.edit { prefs ->
+            val current = parseExpenseMap(prefs[EXPENSES_KEY] ?: "{}")
+            current[date] = expenses
+            prefs[EXPENSES_KEY] = expenseMapToJson(current)
+        }
+    }
+
+    fun getExpensesFlow(): Flow<Map<String, Map<String, Double>>> =
+        context.dataStore.data.map { prefs ->
+            parseExpenseMap(prefs[EXPENSES_KEY] ?: "{}")
+        }
+
+    fun getTotalExpensesMonth(expenseMap: Map<String, Map<String, Double>>): Double {
+        val thisMonth = LocalDate.now().toString().substring(0, 7)
+        return expenseMap.entries
+            .filter { it.key.startsWith(thisMonth) }
+            .sumOf { entry -> entry.value.values.sum() }
+    }
+
     // --- JSON Serialization ---
     private fun parseStreams(json: String): List<IncomeStream> {
         return try {
@@ -226,34 +248,10 @@ class StreamIQRepository(private val context: Context) {
         }
         return arr.toString()
     }
-}
-
-    // ── Expense tracking ─────────────────────────────────────────────────────
-    private val EXPENSES_KEY = stringPreferencesKey("daily_expenses")
-
-    suspend fun saveExpenses(date: String, expenses: Map<String, Double>) {
-        context.dataStore.edit { prefs ->
-            val current = parseExpenseMap(prefs[EXPENSES_KEY] ?: "{}")
-            current[date] = expenses
-            prefs[EXPENSES_KEY] = expenseMapToJson(current)
-        }
-    }
-
-    fun getExpensesFlow(): Flow<Map<String, Map<String, Double>>> =
-        context.dataStore.data.map { prefs ->
-            parseExpenseMap(prefs[EXPENSES_KEY] ?: "{}")
-        }
-
-    fun getTotalExpensesMonth(expenseMap: Map<String, Map<String, Double>>): Double {
-        val thisMonth = java.time.LocalDate.now().toString().substring(0, 7)
-        return expenseMap.entries
-            .filter { it.key.startsWith(thisMonth) }
-            .sumOf { entry -> entry.value.values.sum() }
-    }
 
     private fun parseExpenseMap(json: String): MutableMap<String, Map<String, Double>> {
         return try {
-            val obj = org.json.JSONObject(json)
+            val obj = JSONObject(json)
             val result = mutableMapOf<String, Map<String, Double>>()
             obj.keys().forEach { date ->
                 val dayObj = obj.getJSONObject(date)
@@ -266,11 +264,12 @@ class StreamIQRepository(private val context: Context) {
     }
 
     private fun expenseMapToJson(map: Map<String, Map<String, Double>>): String {
-        val obj = org.json.JSONObject()
+        val obj = JSONObject()
         map.forEach { (date, cats) ->
-            val dayObj = org.json.JSONObject()
+            val dayObj = JSONObject()
             cats.forEach { (cat, amt) -> dayObj.put(cat, amt) }
             obj.put(date, dayObj)
         }
         return obj.toString()
     }
+}
