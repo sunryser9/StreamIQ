@@ -1,6 +1,7 @@
 package com.streamiq.ui.viewmodel
 
 import android.app.Application
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.streamiq.data.*
@@ -27,11 +28,20 @@ data class StreamIQUiState(
     val netProfitMonth: Double get() = totalMonth - totalExpensesMonth
 }
 
+enum class ProFeature {
+    AI_INSIGHTS, VOICE_LOGGING, FORECAST, STREAM_SCORE, UNLIMITED_STREAMS
+}
+
 class StreamIQViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repo = StreamIQRepository(application)
     private val _uiState = MutableStateFlow(StreamIQUiState())
     val uiState: StateFlow<StreamIQUiState> = _uiState.asStateFlow()
+
+    // ── Pro gate ─────────────────────────────────────────────────────────────
+    private val _isPro = mutableStateOf(false)
+    val isPro: Boolean get() = _isPro.value
+    val maxFreeStreams = 3
 
     init {
         viewModelScope.launch {
@@ -134,29 +144,15 @@ class StreamIQViewModel(application: Application) : AndroidViewModel(application
             lastEntry == null || lastEntry.date < cutoff
         }
     }
-}
-
-    // ── Pro gate ─────────────────────────────────────────────────────────────
-    // In production: connect to Google Play Billing
-    // For now: isPro flag (set to false for real launch, true for testing)
-    private val _isPro = mutableStateOf(false)
-    val isPro: Boolean get() = _isPro.value
-
-    // Free tier limits
-    val maxFreeStreams = 3
 
     fun isProFeature(feature: ProFeature): Boolean = when (feature) {
-        ProFeature.AI_INSIGHTS    -> isPro
-        ProFeature.VOICE_LOGGING  -> isPro
-        ProFeature.FORECAST       -> isPro
-        ProFeature.STREAM_SCORE   -> isPro
+        ProFeature.AI_INSIGHTS       -> isPro
+        ProFeature.VOICE_LOGGING     -> isPro
+        ProFeature.FORECAST          -> isPro
+        ProFeature.STREAM_SCORE      -> isPro
         ProFeature.UNLIMITED_STREAMS -> isPro
     }
 
     fun canAddStream(): Boolean =
         isPro || _uiState.value.streams.size < maxFreeStreams
-}
-
-enum class ProFeature {
-    AI_INSIGHTS, VOICE_LOGGING, FORECAST, STREAM_SCORE, UNLIMITED_STREAMS
 }
