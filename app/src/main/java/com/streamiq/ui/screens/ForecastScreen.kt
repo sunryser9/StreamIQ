@@ -58,7 +58,7 @@ fun ForecastScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
         containerColor = bg,
         topBar = {
             TopAppBar(
-                title = { Text("Forecast 🔮", color = textPrimary, fontWeight = FontWeight.Bold) },
+                title = { Text("Revenue Forecast", color = textPrimary, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, "Back", tint = textSecondary)
@@ -88,9 +88,9 @@ fun ForecastScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                     modifier = Modifier.padding(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text("🔮 Month-End Forecast",
-                        fontSize = 13.sp, color = Accent,
-                        fontWeight = FontWeight.SemiBold, letterSpacing = 0.5.sp)
+                    Text("Month-End Revenue Projection",
+                      fontSize = 13.sp, color = Accent,
+                     fontWeight = FontWeight.SemiBold, letterSpacing = 0.5.sp)
                     Spacer(Modifier.height(8.dp))
                     Text(
                         formatMoneyFull(totalForecast),
@@ -154,13 +154,13 @@ fun ForecastScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 StatCard(
-                    modifier = Modifier.weight(1f),
-                    emoji = "💰",
-                    label = "Earned so far",
-                    value = formatMoneyFull(uiState.totalMonth),
-                    color = Green,
-                    isDark = isDark
-                )
+                   modifier = Modifier.weight(1f),
+                  emoji = "★",
+                 label = "Revenue to Date",
+                value = formatMoneyFull(uiState.totalMonth),
+                color = Green,
+                 isDark = isDark
+           )
                 StatCard(
                     modifier = Modifier.weight(1f),
                     emoji = "📈",
@@ -176,22 +176,22 @@ fun ForecastScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    StatCard(
-                        modifier = Modifier.weight(1f),
-                        emoji = "🎯",
-                        label = "Monthly goal",
-                        value = formatMoneyFull(totalGoal),
-                        color = Gold,
-                        isDark = isDark
-                    )
-                    StatCard(
-                        modifier = Modifier.weight(1f),
-                        emoji = if (totalForecast >= totalGoal) "✅" else "⚡",
-                        label = "Gap to goal",
-                        value = formatMoney((totalGoal - uiState.totalMonth).coerceAtLeast(0.0)),
-                        color = if (totalForecast >= totalGoal) Green else Red,
-                        isDark = isDark
-                    )
+                   StatCard(
+                  modifier = Modifier.weight(1f),
+                  emoji = "▲",
+                  label = "Monthly Target",
+                  value = formatMoneyFull(totalGoal),
+                  color = Gold,
+                  isDark = isDark
+            )
+                StatCard(
+               modifier = Modifier.weight(1f),
+               emoji = if (totalForecast >= totalGoal) "★" else "▲",
+               label = "Revenue Gap",
+              value = formatMoney((totalGoal - uiState.totalMonth).coerceAtLeast(0.0)),
+              color = if (totalForecast >= totalGoal) Green else Red,
+              isDark = isDark
+        )
                 }
             }
 
@@ -209,11 +209,11 @@ fun ForecastScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                         modifier = Modifier.padding(32.dp).fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text("🔮", fontSize = 40.sp)
-                        Spacer(Modifier.height(8.dp))
-                        Text("Add streams and log income to see forecasts",
-                            textAlign = TextAlign.Center,
-                            fontSize = 14.sp, color = textSecondary)
+                        Text("📈", fontSize = 40.sp)
+                       Spacer(Modifier.height(8.dp))
+                      Text("Add revenue streams and log income to generate your projection.",
+                      textAlign = TextAlign.Center,
+                       fontSize = 14.sp, color = textSecondary)
                     }
                 }
             } else {
@@ -297,8 +297,8 @@ fun ForecastScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                     containerColor = Gold.copy(alpha = 0.1f))
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("💡 To Hit Your Goal",
-                        fontWeight = FontWeight.Bold, fontSize = 14.sp, color = textPrimary)
+                   Text("Daily Run-Rate Required",
+                  fontWeight = FontWeight.Bold, fontSize = 14.sp, color = textPrimary)
                     Spacer(Modifier.height(8.dp))
                     if (totalGoal > 0 && daysLeft > 0) {
                         val needed = (totalGoal - uiState.totalMonth).coerceAtLeast(0.0)
@@ -312,8 +312,8 @@ fun ForecastScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                         Text("Set monthly goals on your streams to see what you need per day to hit them.",
                             fontSize = 13.sp, color = textSecondary, lineHeight = 18.sp)
                     } else {
-                        Text("🎉 Goal achieved! You've already hit your monthly target.",
-                            fontSize = 13.sp, color = Green)
+                        Text("Monthly revenue target achieved. You have met your operating goal.",
+                       fontSize = 13.sp, color = Green)
                     }
                 }
             }
