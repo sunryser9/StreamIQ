@@ -166,8 +166,8 @@ fun DashboardScreen(
                             modifier = Modifier.weight(1f)
                         )
                         StatChip(
-                            label = "STREAK",
-                            value = "${uiState.overallStreak}d 🔥",
+                           label = "ACTIVE DAYS",
+                            value = "${uiState.overallStreak}d",
                             color = Gold,
                             modifier = Modifier.weight(1f)
                         )
@@ -239,16 +239,16 @@ fun DashboardScreen(
                         Text("⭐", fontSize = 24.sp)
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                "${uiState.overallStreak} days logging — loving StreamIQ?",
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = TextPrimary
-                            )
-                            Text(
-                                "A quick review helps other solopreneurs find this app 💰",
-                                fontSize = 11.sp,
-                                color = TextSecondary
-                            )
+                          "${uiState.overallStreak} days of consistent revenue tracking.",
+                          fontSize = 13.sp,
+                          fontWeight = FontWeight.Bold,
+                          color = TextPrimary
+)
+Text(
+    "A quick review helps other independent operators find StreamIQ.",
+    fontSize = 11.sp,
+    color = TextSecondary
+)
                         }
                     }
                 }
@@ -277,11 +277,11 @@ fun DashboardScreen(
                         verticalAlignment = Alignment.CenterVertically) {
                         Text("⚡", fontSize = 22.sp)
                         Column {
-                            Text("Unlock StreamIQ Pro",
-                                fontWeight = FontWeight.Bold, fontSize = 14.sp,
-                                color = TextPrimary)
-                            Text("AI Insights · Voice · Forecast · \$4.99/mo",
-                                fontSize = 12.sp, color = Color(0xFFCE93D8))
+                      Text("Upgrade to StreamIQ Pro",
+                         fontWeight = FontWeight.Bold, fontSize = 14.sp,
+                           color = TextPrimary)
+                      Text("Tax Analysis · Revenue Forecasting · AI Reporting · \$4.99/mo",
+                       fontSize = 12.sp, color = Color(0xFFCE93D8)) 
                         }
                     }
                     Text("→", fontSize = 18.sp, color = Color(0xFF9C27B0),
@@ -302,17 +302,17 @@ fun DashboardScreen(
                     UnicornFeatureCard("⚡", "Stream Score",
                         "Rate each stream 0–100", Accent, onStreamScore,
                         Modifier.weight(1f))
-                    UnicornFeatureCard("🔮", "Forecast",
-                        "Month-end projection", Color(0xFF9C27B0), onForecast,
-                        Modifier.weight(1f))
+                  UnicornFeatureCard("📈", "Forecast",
+                    "Month-end revenue projection", Color(0xFF9C27B0), onForecast,
+                     Modifier.weight(1f))
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     UnicornFeatureCard("🏺", "Tax Estimator",
                         "Calculates tax to set aside", Gold, onTaxJar,
                         Modifier.weight(1f))
-                    UnicornFeatureCard("🧠", "AI Insights",
-                        "Personalised tips", Green, onInsights,
-                        Modifier.weight(1f))
+                   UnicornFeatureCard("🧠", "AI Insights",
+                  "Tax write-offs · Run-rate · Risk flags", Green, onInsights,
+                   Modifier.weight(1f))
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     UnicornFeatureCard("📊", "Export CSV",
@@ -330,7 +330,7 @@ fun DashboardScreen(
             // ── PRIVACY FOOTER ───────────────────────────────────────────
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                "🔒 All data stays on your device. No cloud. No ads. Ever.",
+                "All financial data is processed and stored locally on-device. No third-party data transmission. No advertising. Built for professional confidentiality.",
                 fontSize = 10.sp,
                 color = TextMuted,
                 textAlign = TextAlign.Center,
@@ -395,7 +395,7 @@ fun BestStreamCard(summary: StreamSummary) {
             .padding(16.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("👑", fontSize = 28.sp)
+            Text("★", fontSize = 28.sp) 
             Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text("TOP EARNER THIS MONTH", fontSize = 9.sp, color = Gold,
@@ -482,7 +482,7 @@ fun StreamCard(summary: StreamSummary) {
         if (summary.streak > 0) {
             Spacer(modifier = Modifier.width(8.dp))
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("🔥", fontSize = 14.sp)
+               Text("▲", fontSize = 14.sp) 
                 Text("${summary.streak}", fontSize = 10.sp, color = Gold)
             }
         }
@@ -503,8 +503,8 @@ fun EmptyStreamsCard(onAddStream: () -> Unit) {
     ) {
         Text("💡", fontSize = 40.sp)
         Spacer(modifier = Modifier.height(12.dp))
-        Text("Add your first stream", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = TextPrimary)
-        Text("Track YouTube, websites, crypto and more", fontSize = 13.sp, color = TextSecondary, textAlign = TextAlign.Center)
+        Text("Add your first revenue stream", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = TextPrimary)
+        Text("Track consulting, freelance, digital products, and more", fontSize = 13.sp, color = TextSecondary, textAlign = TextAlign.Center)
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = onAddStream,
