@@ -73,9 +73,9 @@ fun ProScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                     Text("StreamIQ Pro",
                         fontSize = 28.sp, fontWeight = FontWeight.Black, color = Color.White)
                     Spacer(Modifier.height(8.dp))
-                    Text("Everything you need to grow your income streams",
-                        fontSize = 14.sp, color = Color.White.copy(0.8f),
-                        textAlign = TextAlign.Center)
+                    Text("Professional financial intelligence for independent operators",
+                    fontSize = 14.sp, color = Color.White.copy(0.8f),
+                    textAlign = TextAlign.Center)
                     Spacer(Modifier.height(20.dp))
                     Row(
                         verticalAlignment = Alignment.Bottom,
@@ -147,14 +147,14 @@ fun ProScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                                 color = Color(0xFFCE93D8))
                             Spacer(Modifier.height(12.dp))
                             listOf(
-                                "Everything in Free",
-                                "AI Insights 🧠",
-                                "Voice logging 🎙️",
-                                "Unlimited streams",
-                                "Forecast 🔮",
-                                "Stream Score ⚡",
-                                "Priority support"
-                            ).forEach {
+                          "Everything in Free",
+                          "AI Tax Write-off Analysis",
+                          "Voice Revenue Logging",
+                          "Unlimited Revenue Streams",
+                        "Month-End Revenue Forecasting",
+                         "Stream Performance Scoring",
+                       "Priority Support"
+                ).forEach {
                                 ProFeatureRow(it)
                                 Spacer(Modifier.height(6.dp))
                             }
@@ -170,9 +170,9 @@ fun ProScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF9C27B0))
                 ) {
-                    Text("Start Pro — \$4.99/month",
-                        fontWeight = FontWeight.Bold, fontSize = 16.sp,
-                        color = Color.White)
+                   Text("Upgrade to Pro — \$4.99/month",
+                   fontWeight = FontWeight.Bold, fontSize = 16.sp,
+                   color = Color.White)
                 }
 
                 // Why pay? trust section
@@ -183,19 +183,19 @@ fun ProScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                         containerColor = Accent.copy(0.08f))
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Why pay?", fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp, color = textPrimary)
-                        Spacer(Modifier.height(8.dp))
-                        listOf(
-                            "StreamIQ is built by a solo developer — not a VC-funded corp",
-                            "Pro revenue keeps the app ad-free and alive forever",
-                            "You pay less in a month than one coffee — and this helps your income"
-                        ).forEach { reason ->
+                       Text("Why Upgrade?", fontWeight = FontWeight.Bold,
+                     fontSize = 14.sp, color = textPrimary)
+                    Spacer(Modifier.height(8.dp))
+                    listOf(
+                  "AI-driven tax write-off identification reduces your taxable income pool",
+                "Daily run-rate calculations tell you exactly what you need to hit your revenue target",
+                "Income concentration alerts flag over-reliance on a single stream before it becomes a risk"
+                ).forEach { reason ->
                             Row(
                                 modifier = Modifier.padding(vertical = 4.dp),
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                Text("💜", fontSize = 13.sp)
+                               Text("▲", fontSize = 13.sp)
                                 Text(reason, fontSize = 12.sp, color = textSecondary,
                                     lineHeight = 17.sp)
                             }
@@ -205,9 +205,10 @@ fun ProScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
 
                 // No tricks
                 Text(
-                    "No ads. No data selling. No surprise charges. Cancel in 1 tap.",
-                    fontSize = 12.sp, color = textSecondary, textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                "No ads. No third-party data sharing. No surprise charges. Cancel anytime.",
+                fontSize = 12.sp, color = textSecondary, textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+)
                 )
 
                 Spacer(Modifier.height(40.dp))
