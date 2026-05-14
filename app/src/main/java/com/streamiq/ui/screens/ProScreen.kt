@@ -1,7 +1,7 @@
 package com.streamiq.ui.screens
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  STREAMIQ PRO — $4.99/month
+//   STREAMIQ PRO — $9.99/month
 //  Free: Manual logging, Basic Stats, Export CSV, Tax Estimator, Expenses
 //  Pro: AI Insights, Voice Logging, Unlimited Streams, Forecast, Stream Score
 // ═══════════════════════════════════════════════════════════════════════════
@@ -81,10 +81,10 @@ fun ProScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                         verticalAlignment = Alignment.Bottom,
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        Text("\$4", fontSize = 42.sp, fontWeight = FontWeight.Black,
-                            color = Color.White)
-                        Text(".99", fontSize = 24.sp, fontWeight = FontWeight.Bold,
-                            color = Color.White.copy(0.9f))
+                       Text("\$9", fontSize = 42.sp, fontWeight = FontWeight.Black,
+                        color = Color.White)
+                       Text(".99", fontSize = 24.sp, fontWeight = FontWeight.Bold,
+                         color = Color.White.copy(0.9f))
                         Text(" / month", fontSize = 14.sp,
                             color = Color.White.copy(0.7f),
                             modifier = Modifier.padding(bottom = 6.dp))
@@ -143,8 +143,8 @@ fun ProScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                             Text("PRO ⚡", fontSize = 12.sp, fontWeight = FontWeight.Bold,
                                 color = Color(0xFFCE93D8), letterSpacing = 1.sp)
                             Spacer(Modifier.height(2.dp))
-                            Text("\$4.99 / month", fontSize = 11.sp,
-                                color = Color(0xFFCE93D8))
+                           Text("\$9.99 / month", fontSize = 11.sp,
+                            color = Color(0xFFCE93D8))
                             Spacer(Modifier.height(12.dp))
                             listOf(
                           "Everything in Free",
@@ -170,7 +170,7 @@ fun ProScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF9C27B0))
                 ) {
-                   Text("Upgrade to Pro — \$4.99/month",
+                  Text("Upgrade to Pro — \$9.99/month",
                    fontWeight = FontWeight.Bold, fontSize = 16.sp,
                    color = Color.White)
                 }
