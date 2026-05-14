@@ -70,8 +70,8 @@ fun AnalyticsScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Kill/Keep analysis
-                Text("KILL OR KEEP? ⚡", fontSize = 11.sp, fontWeight = FontWeight.Bold,
-                    color = TextMuted, letterSpacing = 2.sp)
+               Text("STREAM EFFICIENCY REVIEW", fontSize = 11.sp, fontWeight = FontWeight.Bold,
+                 color = TextMuted, letterSpacing = 2.sp)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text("Based on monthly earnings", color = TextMuted, fontSize = 11.sp)
                 Spacer(modifier = Modifier.height(12.dp))
@@ -87,8 +87,8 @@ fun AnalyticsScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Streak leaderboard
-                Text("STREAK LEADERS 🔥", fontSize = 11.sp, fontWeight = FontWeight.Bold,
-                    color = TextMuted, letterSpacing = 2.sp)
+               Text("CONSISTENCY LEADERS", fontSize = 11.sp, fontWeight = FontWeight.Bold,
+                 color = TextMuted, letterSpacing = 2.sp)
                 Spacer(modifier = Modifier.height(12.dp))
 
                 uiState.summaries.sortedByDescending { it.streak }.forEach { summary ->
@@ -98,7 +98,7 @@ fun AnalyticsScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                     }
                 }
             } else {
-                Text("No data yet. Start logging daily!", color = TextSecondary, fontSize = 14.sp)
+               Text("No revenue data recorded yet. Begin logging daily entries to generate stream analytics.", color = TextSecondary, fontSize = 14.sp)
             }
         }
     }
@@ -210,6 +210,6 @@ fun StreakRow(summary: StreamSummary) {
         Spacer(modifier = Modifier.width(12.dp))
         Text(summary.stream.name, fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
             color = TextPrimary, modifier = Modifier.weight(1f))
-        Text("🔥 ${summary.streak} days", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Gold)
+       Text("▲ ${summary.streak} days", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Gold)
     }
 }
