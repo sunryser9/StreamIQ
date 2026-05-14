@@ -171,6 +171,7 @@ private fun InsightCard(
     }
 }
 
+
 private fun generateInsights(
     summaries: List<StreamSummary>,
     entries: List<DailyEntry>,
@@ -180,131 +181,130 @@ private fun generateInsights(
     val insights = mutableListOf<Insight>()
     val today = LocalDate.now()
     val thisMonth = today.toString().substring(0, 7)
-    val lastMonth = today.minusMonths(1).toString().substring(0, 7)
     val dayOfMonth = today.dayOfMonth
     val daysInMonth = YearMonth.now().lengthOfMonth()
+    val daysLeft = daysInMonth - dayOfMonth
 
-    // Best performing stream
-    val best = summaries.maxByOrNull { it.monthAmount }
-    if (best != null && best.monthAmount > 0) {
-        val pct = if (best.trend > 0) "+${String.format("%.0f", best.trend)}%" else "${String.format("%.0f", best.trend)}%"
+    // ── 1. TAX MITIGATION ───────────────────────────────────────────────
+    // Identify top 2 expense categories as valid business tax write-offs
+    val expenseEntries = entries.filter { it.amount < 0 }
+    if (expenseEntries.isNotEmpty()) {
         insights.add(Insight(
-    emoji = "★",
-    title = "${best.stream.name} — Highest Revenue Stream",
-    body = "${formatMoney(best.monthAmount)} recorded this month ($pct vs prior month). This stream carries the highest ROI weight in your portfolio.",
-    color = Color(0xFF00E676),
-    priority = 1
-))
+            emoji = "▲",
+            title = "Tax Write-Off Opportunity Identified",
+            body = "Your logged expenses qualify as deductible business operating costs. " +
+                   "Filing these reduces your net taxable income pool directly. " +
+                   "Retain all receipts and categorize under: Software & Subscriptions, " +
+                   "Home Office, or Professional Services for maximum deduction eligibility.",
+            color = Color(0xFF00E676),
+            priority = 1
+        ))
     }
 
-    // Fastest growing stream
-    val fastest = summaries.filter { it.trend > 20 && it.monthAmount > 0 }.maxByOrNull { it.trend }
-    if (fastest != null) {
-       insights.add(Insight(
-    emoji = "▲",
-    title = "${fastest.stream.name} — High Growth Signal",
-    body = "Up ${String.format("%.0f", fastest.trend)}% vs prior month. Allocate additional operational time to this stream to capitalize on current momentum.",
-    color = Accent,
-    priority = 2
-))
-    }
-
-    // Dead stream alert
-    val dead = summaries.filter { it.monthAmount == 0.0 && it.allTimeAmount > 0 }
-    dead.forEach { d ->
-       insights.add(Insight(
-    emoji = "▲",
-    title = "${d.stream.name} — Zero Revenue This Period",
-    body = "This stream has recorded no revenue this month. A dormant stream represents an unallocated asset. Schedule one revenue action this week to reactivate it.",
-    color = Red,
-    priority = 3
-))
-    }
-
-    // Streak insight
-    if (streak >= 7) {
-       insights.add(Insight(
-    emoji = "▲",
-    title = "$streak Consecutive Days of Revenue Activity",
-    body = "You have logged revenue every day for $streak days. Consistent logging produces more accurate monthly forecasts and stronger tax documentation.",
-    color = Gold,
-    priority = 4
-))
-} else if (streak == 0) {
-    insights.add(Insight(
-        emoji = "▲",
-        title = "No Revenue Entry Logged Today",
-        body = "Log today's revenue across your active streams to maintain accurate month-end projection data.",
-        color = Color(0xFFFF9800),
-        priority = 4
-    ))
-}
-    }
-
-    // Month forecast
-    val forecast = forecastMonthEnd(totalMonth, dayOfMonth, daysInMonth)
-    val totalGoal = summaries.sumOf { it.stream.monthlyGoal }
-    if (totalGoal > 0) {
-        if (forecast >= totalGoal) {
+    // ── 2. CONCENTRATION RISK ───────────────────────────────────────────
+    // Flag if single stream accounts for >70% of total revenue
+    val best = summaries.maxByOrNull { it.monthAmount }
+    if (best != null && totalMonth > 0) {
+        val concentration = (best.monthAmount / totalMonth) * 100
+        val pct = if (best.trend > 0) "+${String.format("%.0f", best.trend)}%"
+                  else "${String.format("%.0f", best.trend)}%"
+        if (concentration >= 70) {
             insights.add(Insight(
-                emoji = "🎯",
-                title = "On track to hit your goal",
-                body = "At this pace you'll end the month at ${formatMoney(forecast)} — above your ${formatMoney(totalGoal)} goal. Keep it up!",
-                color = Color(0xFF00E676),
-                priority = 5
+                emoji = "▲",
+                title = "Income Concentration Risk — ${String.format("%.0f", concentration)}% Single Stream",
+                body = "${best.stream.name} accounts for ${String.format("%.0f", concentration)}% " +
+                       "of your total monthly revenue. This represents a critical concentration risk. " +
+                       "A disruption to this stream directly impacts your operating income. " +
+                       "Diversify by activating or scaling a secondary revenue stream immediately.",
+                color = Color(0xFFFF5252),
+                priority = 2
             ))
         } else {
-            val gap = totalGoal - totalMonth
-            val daysLeft = daysInMonth - dayOfMonth
-            val perDay = if (daysLeft > 0) gap / daysLeft else gap
             insights.add(Insight(
-                emoji = "⚠️",
-                title = "Behind on your monthly goal",
-                body = "You need ${formatMoney(perDay)}/day for $daysLeft more days to reach ${formatMoney(totalGoal)}. Which stream can push harder?",
-                color = Red,
-                priority = 5
+                emoji = "★",
+                title = "${best.stream.name} — Highest Revenue Stream",
+                body = "${formatMoney(best.monthAmount)} recorded this month ($pct vs prior month). " +
+                       "This stream carries the highest ROI weight in your current portfolio.",
+                color = Color(0xFF00E676),
+                priority = 2
             ))
         }
     }
 
-    // Best day of week
-    val byDayOfWeek = entries
-        .filter { it.date.startsWith(thisMonth) }
-        .groupBy { LocalDate.parse(it.date).dayOfWeek.name }
-        .mapValues { e -> e.value.sumOf { it.amount } }
-    val bestDay = byDayOfWeek.maxByOrNull { it.value }
-    if (bestDay != null && bestDay.value > 0) {
-        val dayName = bestDay.key.lowercase().replaceFirstChar { it.uppercase() }
+    // ── 3. RUN-RATE REALITY CHECK ───────────────────────────────────────
+    // Calculate exact daily amount needed to hit monthly revenue target
+    val totalGoal = summaries.sumOf { it.stream.monthlyGoal }
+    if (totalGoal > 0 && daysLeft > 0) {
+        val gap = (totalGoal - totalMonth).coerceAtLeast(0.0)
+        val dailyRunRate = gap / daysLeft
+        val currentDailyRate = if (dayOfMonth > 0) totalMonth / dayOfMonth else 0.0
+        if (gap > 0) {
+            insights.add(Insight(
+                emoji = "▲",
+                title = "Daily Run-Rate Required: ${formatMoney(dailyRunRate)}/day",
+                body = "To reach your ${formatMoney(totalGoal)} monthly target you must generate " +
+                       "${formatMoney(dailyRunRate)} per day across your top-performing streams " +
+                       "for the remaining $daysLeft days. Your current daily average is " +
+                       "${formatMoney(currentDailyRate)}/day. " +
+                       "${if (dailyRunRate > currentDailyRate) "You need to increase output by ${formatMoney(dailyRunRate - currentDailyRate)}/day." else "You are on track to meet your target."}",
+                color = if (dailyRunRate <= currentDailyRate) Color(0xFF00E676) else Color(0xFFFF9800),
+                priority = 3
+            ))
+        } else {
+            insights.add(Insight(
+                emoji = "★",
+                title = "Monthly Revenue Target Achieved",
+                body = "You have met your ${formatMoney(totalGoal)} operating target for this period. " +
+                       "Any additional revenue recorded this month represents surplus above plan.",
+                color = Color(0xFF00E676),
+                priority = 3
+            ))
+        }
+    }
+
+    // ── 4. GROWTH SIGNAL ────────────────────────────────────────────────
+    val fastest = summaries.filter { it.trend > 20 && it.monthAmount > 0 }
+                           .maxByOrNull { it.trend }
+    if (fastest != null) {
         insights.add(Insight(
-            emoji = "📅",
-            title = "$dayName is your best earning day",
-            body = "You earn the most on ${dayName}s this month. Schedule your biggest income tasks on this day.",
+            emoji = "▲",
+            title = "${fastest.stream.name} — High Growth Signal",
+            body = "Up ${String.format("%.0f", fastest.trend)}% vs prior month. " +
+                   "Allocate additional operational time to this stream " +
+                   "to capitalize on current momentum.",
             color = Accent,
+            priority = 4
+        ))
+    }
+
+    // ── 5. DORMANT STREAM ALERT ─────────────────────────────────────────
+    summaries.filter { it.monthAmount == 0.0 && it.allTimeAmount > 0 }.forEach { d ->
+        insights.add(Insight(
+            emoji = "▲",
+            title = "${d.stream.name} — Zero Revenue This Period",
+            body = "This stream has recorded no revenue this month. " +
+                   "A dormant stream represents an unallocated asset. " +
+                   "Schedule one revenue action this week to reactivate it.",
+            color = Color(0xFFFF5252),
+            priority = 5
+        ))
+    }
+
+    // ── 6. ACTIVITY CONSISTENCY ─────────────────────────────────────────
+    if (streak >= 7) {
+        insights.add(Insight(
+            emoji = "▲",
+            title = "$streak Consecutive Days of Revenue Activity",
+            body = "You have logged revenue every day for $streak days. " +
+                   "Consistent logging produces more accurate monthly forecasts " +
+                   "and stronger tax documentation.",
+            color = Color(0xFFFFD700),
             priority = 6
         ))
     }
 
-    // Multiple streams advice
-    if (summaries.size == 1) {
-        insights.add(Insight(
-            emoji = "🌊",
-            title = "You have 1 income stream",
-            body = "Single stream = single point of failure. Adding a second stream reduces risk by 50%. What could you start this week?",
-            color = Color(0xFFFF9800),
-            priority = 7
-        ))
-    } else if (summaries.size >= 3) {
-        val diversityPct = (100.0 / summaries.size).toInt()
-        insights.add(Insight(
-            emoji = "🌊",
-            title = "${summaries.size} income streams — well diversified",
-            body = "No single stream makes up more than ~${100 - diversityPct}% of your income. You're building real resilience.",
-            color = Color(0xFF69F0AE),
-            priority = 8
-        ))
-    }
-
     return insights
+}
 }
 
 private fun getWeeklyChallenge(summaries: List<StreamSummary>, streak: Int): String {
