@@ -280,7 +280,7 @@ Text(
                       Text("Upgrade to StreamIQ Pro",
                          fontWeight = FontWeight.Bold, fontSize = 14.sp,
                            color = TextPrimary)
-                      Text("Tax Analysis · Revenue Forecasting · AI Reporting · \$4.99/mo",
+                     Text("Tax Analysis · Revenue Forecasting · AI Reporting · \$9.99/mo",
                        fontSize = 12.sp, color = Color(0xFFCE93D8)) 
                         }
                     }
@@ -299,8 +299,8 @@ Text(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    UnicornFeatureCard("⚡", "Stream Score",
-                        "Rate each stream 0–100", Accent, onStreamScore,
+                    UnicornFeatureCard("⚡", "Stream Performance",
+                  "Index each stream 0–100", Accent, onStreamScore,
                         Modifier.weight(1f))
                   UnicornFeatureCard("📈", "Forecast",
                     "Month-end revenue projection", Color(0xFF9C27B0), onForecast,
