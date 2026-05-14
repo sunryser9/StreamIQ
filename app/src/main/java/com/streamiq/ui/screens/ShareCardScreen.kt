@@ -39,7 +39,7 @@ fun ShareCardScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
         containerColor = Background,
         topBar = {
             TopAppBar(
-                title = { Text("Share Your Wins", color = TextPrimary, fontWeight = FontWeight.Bold) },
+                title = { Text("Monthly Revenue Report", color = TextPrimary, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, "Back", tint = TextSecondary)
@@ -84,8 +84,8 @@ fun ShareCardScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    Text("TOTAL EARNED", fontSize = 10.sp, color = TextMuted,
-                        letterSpacing = 2.sp, fontWeight = FontWeight.Bold)
+                    Text("TOTAL REVENUE", fontSize = 10.sp, color = TextMuted,
+                       letterSpacing = 2.sp, fontWeight = FontWeight.Bold)
                     Text(
                         formatMoney(uiState.totalMonth),
                         fontSize = 44.sp,
@@ -129,8 +129,8 @@ fun ShareCardScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column {
-                            Text("STREAK", fontSize = 9.sp, color = TextMuted, letterSpacing = 1.sp)
-                            Text("🔥 ${uiState.overallStreak} days", fontSize = 14.sp,
+                            Text("ACTIVE DAYS", fontSize = 9.sp, color = TextMuted, letterSpacing = 1.sp)
+                            Text("▲ ${uiState.overallStreak} days", fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold, color = Gold)
                         }
                         Column(horizontalAlignment = Alignment.End) {
@@ -142,24 +142,24 @@ fun ShareCardScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Text(
-                        "Track all your income streams — streamiq.app",
-                        fontSize = 10.sp,
-                        color = TextMuted,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                   Text(
+                    "Multi-stream revenue intelligence — streamiq.app",
+                     fontSize = 10.sp,
+                     color = TextMuted,
+                     textAlign = TextAlign.Center,
+                      modifier = Modifier.fillMaxWidth()
+
                 }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                "Share your monthly P&L with your audience.\nCreators love transparency content.",
-                color = TextSecondary,
-                fontSize = 13.sp,
+              "Export your monthly P&L breakdown for client reporting, tax documentation, or professional transparency.",
+               color = TextSecondary,
+               fontSize = 13.sp,
                 textAlign = TextAlign.Center
-            )
+        )
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -192,12 +192,11 @@ fun ShareCardScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
             ) {
                 Icon(Icons.Default.Share, "Share", tint = Background)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Share My P&L Card", color = Background, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text("Export P&L Report", color = Background, fontWeight = FontWeight.Bold, fontSize = 16.sp)
             }
         }
     }
 }
-
 fun generateShareBitmap(
     totalMonth: Double,
     summaries: List<Triple<String, String, Double>>,
@@ -294,7 +293,7 @@ fun generateShareBitmap(
         color = 0xFF4A5568.toInt(); textSize = 30f
         textAlign = android.graphics.Paint.Align.CENTER
     }
-    canvas.drawText("Track all your income — StreamIQ App", width / 2f, 1850f, ctaPaint)
+    canvas.drawText("Multi-stream revenue intelligence — StreamIQ", width / 2f, 1850f, ctaPaint)
 
     return bitmap
 }
