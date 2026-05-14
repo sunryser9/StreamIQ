@@ -142,15 +142,14 @@ fun ShareCardScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                   Text(
-                    "Multi-stream revenue intelligence — streamiq.app",
-                     fontSize = 10.sp,
-                     color = TextMuted,
+                  Text(
+                   "Multi-stream revenue intelligence — streamiq.app",
+                    fontSize = 10.sp,
+                    color = TextMuted,
                      textAlign = TextAlign.Center,
                       modifier = Modifier.fillMaxWidth()
 
-                }
-            }
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
 
