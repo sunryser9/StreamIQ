@@ -53,7 +53,7 @@ fun InsightsScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
         containerColor = bg,
         topBar = {
             TopAppBar(
-                title = { Text("AI Insights 🧠", color = textPrimary, fontWeight = FontWeight.Bold) },
+                title = { Text("Revenue Intelligence", color = textPrimary, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, "Back", tint = textSecondary)
@@ -79,13 +79,13 @@ fun InsightsScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                 Row(modifier = Modifier.padding(14.dp),
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     verticalAlignment = Alignment.CenterVertically) {
-                    Text("🧠", fontSize = 24.sp)
+                   Text("▲", fontSize = 24.sp)
                     Column {
-                        Text("Personalised to your streams",
-                            fontWeight = FontWeight.Bold, fontSize = 14.sp, color = textPrimary)
-                        Text("Updated daily based on your actual income patterns",
-                            fontSize = 12.sp, color = textSecondary)
-                    }
+                 Text("CPA-Grade Analysis of Your Revenue Streams",
+                fontWeight = FontWeight.Bold, fontSize = 14.sp, color = textPrimary)
+                Text("Updated daily — tax flags, run-rate calculations, and concentration risk.",
+                fontSize = 12.sp, color = textSecondary)
+        }
                 }
             }
 
@@ -100,11 +100,11 @@ fun InsightsScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                         modifier = Modifier.padding(40.dp).fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text("🧠", fontSize = 48.sp)
+                        Text("▲", fontSize = 48.sp)
                         Spacer(Modifier.height(12.dp))
-                        Text("Log income for 3+ days to unlock insights",
-                            fontSize = 14.sp, color = textSecondary,
-                            textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                      Text("Log revenue across 3+ days to generate your first financial analysis.",
+                       fontSize = 14.sp, color = textSecondary,
+                      textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                     }
                 }
             } else {
@@ -121,8 +121,8 @@ fun InsightsScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                 colors = CardDefaults.cardColors(containerColor = Gold.copy(0.1f))
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("🎯 This Week's Challenge",
-                        fontWeight = FontWeight.Bold, fontSize = 14.sp, color = textPrimary)
+                    Text("This Week's Operational Priority",
+                    fontWeight = FontWeight.Bold, fontSize = 14.sp, color = textPrimary)
                     Spacer(Modifier.height(6.dp))
                     Text(challenge, fontSize = 13.sp, color = textSecondary, lineHeight = 18.sp)
                 }
@@ -189,55 +189,56 @@ private fun generateInsights(
     if (best != null && best.monthAmount > 0) {
         val pct = if (best.trend > 0) "+${String.format("%.0f", best.trend)}%" else "${String.format("%.0f", best.trend)}%"
         insights.add(Insight(
-            emoji = "🏆",
-            title = "${best.stream.name} is your top earner",
-            body = "${formatMoney(best.monthAmount)} this month ($pct vs last month). Double down here — it's working.",
-            color = Color(0xFF00E676),
-            priority = 1
-        ))
+    emoji = "★",
+    title = "${best.stream.name} — Highest Revenue Stream",
+    body = "${formatMoney(best.monthAmount)} recorded this month ($pct vs prior month). This stream carries the highest ROI weight in your portfolio.",
+    color = Color(0xFF00E676),
+    priority = 1
+))
     }
 
     // Fastest growing stream
     val fastest = summaries.filter { it.trend > 20 && it.monthAmount > 0 }.maxByOrNull { it.trend }
     if (fastest != null) {
-        insights.add(Insight(
-            emoji = "🚀",
-            title = "${fastest.stream.name} is growing fast",
-            body = "Up ${String.format("%.0f", fastest.trend)}% vs last month. This is momentum — don't let it die.",
-            color = Accent,
-            priority = 2
-        ))
+       insights.add(Insight(
+    emoji = "▲",
+    title = "${fastest.stream.name} — High Growth Signal",
+    body = "Up ${String.format("%.0f", fastest.trend)}% vs prior month. Allocate additional operational time to this stream to capitalize on current momentum.",
+    color = Accent,
+    priority = 2
+))
     }
 
     // Dead stream alert
     val dead = summaries.filter { it.monthAmount == 0.0 && it.allTimeAmount > 0 }
     dead.forEach { d ->
-        insights.add(Insight(
-            emoji = "💀",
-            title = "${d.stream.name} earned nothing this month",
-            body = "This stream has gone quiet. One small action today — post, pitch, or list something — can restart it.",
-            color = Red,
-            priority = 3
-        ))
+       insights.add(Insight(
+    emoji = "▲",
+    title = "${d.stream.name} — Zero Revenue This Period",
+    body = "This stream has recorded no revenue this month. A dormant stream represents an unallocated asset. Schedule one revenue action this week to reactivate it.",
+    color = Red,
+    priority = 3
+))
     }
 
     // Streak insight
     if (streak >= 7) {
-        insights.add(Insight(
-            emoji = "🔥",
-            title = "$streak-day earning streak!",
-            body = "You've earned something every day for $streak days. Consistency is your superpower — protect this streak.",
-            color = Gold,
-            priority = 4
-        ))
-    } else if (streak == 0) {
-        insights.add(Insight(
-            emoji = "⚡",
-            title = "No income logged today yet",
-            body = "Log even a small amount to keep your streak alive. Consistency compounds over months.",
-            color = Color(0xFFFF9800),
-            priority = 4
-        ))
+       insights.add(Insight(
+    emoji = "▲",
+    title = "$streak Consecutive Days of Revenue Activity",
+    body = "You have logged revenue every day for $streak days. Consistent logging produces more accurate monthly forecasts and stronger tax documentation.",
+    color = Gold,
+    priority = 4
+))
+} else if (streak == 0) {
+    insights.add(Insight(
+        emoji = "▲",
+        title = "No Revenue Entry Logged Today",
+        body = "Log today's revenue across your active streams to maintain accurate month-end projection data.",
+        color = Color(0xFFFF9800),
+        priority = 4
+    ))
+}
     }
 
     // Month forecast
@@ -309,9 +310,9 @@ private fun generateInsights(
 private fun getWeeklyChallenge(summaries: List<StreamSummary>, streak: Int): String {
     val weakest = summaries.filter { it.monthAmount > 0 }.minByOrNull { it.monthAmount }
     return when {
-        summaries.isEmpty() -> "Add your first income stream and log one entry today."
-        streak < 3 -> "Log income every day for 7 days straight. Consistency builds momentum."
-        weakest != null -> "Give ${weakest.stream.name} one hour of focused work this week. Can you move the needle?"
-        else -> "Set a monthly goal on each stream. Goals you track are 3x more likely to be achieved."
+        summaries.isEmpty() -> "Add your first revenue stream and log one entry today to begin generating financial data."
+        streak < 3 -> "Log revenue every day this week to establish a consistent data baseline for accurate forecasting."
+        weakest != null -> "Allocate focused time to ${weakest.stream.name} this week. Underperforming streams represent your highest marginal ROI opportunity."
+        else -> "Set a monthly revenue target on each stream. Tracked targets produce measurably higher attainment rates."
     }
 }
