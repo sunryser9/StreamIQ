@@ -208,7 +208,7 @@ fun ProScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                 "No ads. No third-party data sharing. No surprise charges. Cancel anytime.",
                 fontSize = 12.sp, color = textSecondary, textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
-)
+
                 )
 
                 Spacer(Modifier.height(40.dp))
