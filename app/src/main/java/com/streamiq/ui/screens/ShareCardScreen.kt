@@ -2,7 +2,6 @@ package com.streamiq.ui.screens
 
 import android.content.Intent
 import android.graphics.*
-import android.net.Uri
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -85,7 +84,7 @@ fun ShareCardScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                     Spacer(modifier = Modifier.height(20.dp))
 
                     Text("TOTAL REVENUE", fontSize = 10.sp, color = TextMuted,
-                       letterSpacing = 2.sp, fontWeight = FontWeight.Bold)
+                        letterSpacing = 2.sp, fontWeight = FontWeight.Bold)
                     Text(
                         formatMoney(uiState.totalMonth),
                         fontSize = 44.sp,
@@ -95,7 +94,6 @@ fun ShareCardScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    // Stream breakdown
                     uiState.summaries.filter { it.monthAmount > 0 }.take(5).forEach { summary ->
                         Row(
                             modifier = Modifier
@@ -142,29 +140,29 @@ fun ShareCardScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                  Text(
-                   "Multi-stream revenue intelligence — streamiq.app",
-                    fontSize = 10.sp,
-                    color = TextMuted,
-                     textAlign = TextAlign.Center,
-                      modifier = Modifier.fillMaxWidth()
-
-            )
+                    Text(
+                        "Multi-stream revenue intelligence — streamiq.app",
+                        fontSize = 10.sp,
+                        color = TextMuted,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-              "Export your monthly P&L breakdown for client reporting, tax documentation, or professional transparency.",
-               color = TextSecondary,
-               fontSize = 13.sp,
+                "Export your monthly P&L breakdown for client reporting, tax documentation, or professional transparency.",
+                color = TextSecondary,
+                fontSize = 13.sp,
                 textAlign = TextAlign.Center
-        )
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
                 onClick = {
-                    // Generate and share
                     val bitmap = generateShareBitmap(
                         totalMonth = uiState.totalMonth,
                         summaries = uiState.summaries.take(5).map {
@@ -180,10 +178,10 @@ fun ShareCardScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                     val intent = Intent(Intent.ACTION_SEND).apply {
                         type = "image/png"
                         putExtra(Intent.EXTRA_STREAM, uri)
-                        putExtra(Intent.EXTRA_TEXT, "My ${month} income breakdown ⚡ Tracked with #StreamIQ")
+                        putExtra(Intent.EXTRA_TEXT, "My ${month} revenue report — tracked with #StreamIQ")
                         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     }
-                    context.startActivity(Intent.createChooser(intent, "Share your wins"))
+                    context.startActivity(Intent.createChooser(intent, "Export P&L Report"))
                 },
                 modifier = Modifier.fillMaxWidth().height(56.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Accent),
@@ -196,6 +194,7 @@ fun ShareCardScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
         }
     }
 }
+
 fun generateShareBitmap(
     totalMonth: Double,
     summaries: List<Triple<String, String, Double>>,
@@ -208,7 +207,6 @@ fun generateShareBitmap(
     val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
     val canvas = Canvas(bitmap)
 
-    // Background
     val bgPaint = Paint().apply {
         shader = LinearGradient(
             0f, 0f, 0f, height.toFloat(),
@@ -218,7 +216,6 @@ fun generateShareBitmap(
     }
     canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), bgPaint)
 
-    // Accent glow top
     val glowPaint = Paint().apply {
         shader = RadialGradient(
             width / 2f, 0f, 600f,
@@ -230,27 +227,23 @@ fun generateShareBitmap(
 
     val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { typeface = Typeface.DEFAULT_BOLD }
 
-    // Header
     textPaint.color = 0xFF00E5FF.toInt(); textPaint.textSize = 52f
-    canvas.drawText("⚡ StreamIQ", 80f, 160f, textPaint)
+    canvas.drawText("StreamIQ", 80f, 160f, textPaint)
 
     textPaint.color = 0xFF8896B0.toInt(); textPaint.textSize = 36f; textPaint.typeface = Typeface.DEFAULT
     canvas.drawText(month, 80f, 220f, textPaint)
 
-    // Total
     textPaint.color = 0xFF8896B0.toInt(); textPaint.textSize = 32f; textPaint.typeface = Typeface.DEFAULT_BOLD
-    canvas.drawText("TOTAL EARNED THIS MONTH", 80f, 360f, textPaint)
+    canvas.drawText("TOTAL REVENUE THIS MONTH", 80f, 360f, textPaint)
 
     val totalColor = if (totalMonth > 0) 0xFF00E676.toInt() else 0xFF8896B0.toInt()
     textPaint.color = totalColor; textPaint.textSize = 140f
     val totalText = formatMoneyInt(totalMonth)
     canvas.drawText(totalText, 80f, 520f, textPaint)
 
-    // Divider
     val divPaint = Paint().apply { color = 0xFF243048.toInt(); strokeWidth = 2f }
     canvas.drawLine(80f, 580f, (width - 80).toFloat(), 580f, divPaint)
 
-    // Streams
     textPaint.textSize = 36f; textPaint.typeface = Typeface.DEFAULT_BOLD
     textPaint.color = 0xFF4A5568.toInt()
     canvas.drawText("BREAKDOWN BY STREAM", 80f, 650f, textPaint)
@@ -267,14 +260,13 @@ fun generateShareBitmap(
         canvas.drawText(formatMoneyInt(amount), (width - 80).toFloat(), y, amtPaint)
     }
 
-    // Bottom stats
     val statsY = 1650f
     canvas.drawLine(80f, statsY - 40f, (width - 80).toFloat(), statsY - 40f, divPaint)
 
     textPaint.color = 0xFF4A5568.toInt(); textPaint.textSize = 28f; textPaint.typeface = Typeface.DEFAULT_BOLD
-    canvas.drawText("STREAK", 80f, statsY, textPaint)
+    canvas.drawText("ACTIVE DAYS", 80f, statsY, textPaint)
     textPaint.color = 0xFFFFD700.toInt(); textPaint.textSize = 52f
-    canvas.drawText("🔥 ${streak} days", 80f, statsY + 70f, textPaint)
+    canvas.drawText("$streak days", 80f, statsY + 70f, textPaint)
 
     val streamsLabelPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = 0xFF4A5568.toInt(); textSize = 28f; typeface = Typeface.DEFAULT_BOLD
@@ -287,7 +279,6 @@ fun generateShareBitmap(
     }
     canvas.drawText("$streamCount active", (width - 80).toFloat(), statsY + 70f, streamsValPaint)
 
-    // CTA
     val ctaPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = 0xFF4A5568.toInt(); textSize = 30f
         textAlign = android.graphics.Paint.Align.CENTER
@@ -296,5 +287,3 @@ fun generateShareBitmap(
 
     return bitmap
 }
-
-
