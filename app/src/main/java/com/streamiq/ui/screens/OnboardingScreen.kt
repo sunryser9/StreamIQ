@@ -75,26 +75,26 @@ fun OnboardingWelcome(onNext: () -> Unit) {
             color = Accent
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            "Income Stream Tracker",
-            fontSize = 16.sp,
-            color = TextSecondary,
-            textAlign = TextAlign.Center
-        )
-        Text(
-            "Built for solopreneurs with multiple income sources",
-            fontSize = 12.sp,
-            color = TextMuted,
-            textAlign = TextAlign.Center
-        )
+       Text(
+    "Multi-Stream Revenue Intelligence",
+    fontSize = 16.sp,
+    color = TextSecondary,
+    textAlign = TextAlign.Center
+)
+Text(
+    "Professional financial tracking for independent operators with multiple revenue streams",
+    fontSize = 12.sp,
+    color = TextMuted,
+    textAlign = TextAlign.Center
+)
         Spacer(modifier = Modifier.height(48.dp))
 
-        listOf(
-            "📊" to "See ALL your income in one place",
-            "🔥" to "Track which stream earns most",
-            "📈" to "Know your real hourly rate per stream",
-            "🚀" to "Share your wins with the world"
-        ).forEach { (emoji, text) ->
+       listOf(
+    "📊" to "Consolidate all revenue streams into one operational dashboard",
+    "▲" to "Identify your highest-performing stream by monthly revenue",
+    "📈" to "Calculate your real effective rate per revenue stream",
+    "★" to "Export financial data for tax preparation and reporting"
+).forEach { (emoji, text) ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -117,21 +117,21 @@ fun OnboardingWelcome(onNext: () -> Unit) {
             colors = ButtonDefaults.buttonColors(containerColor = Accent),
             shape = RoundedCornerShape(16.dp)
         ) {
-            Text(
-                "Set Up My Streams →",
-                color = Background,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
+           Text(
+    "Set Up Revenue Streams →",
+    color = Background,
+    fontWeight = FontWeight.Bold,
+    fontSize = 16.sp
+)
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            "🔒 All data stays on your device. No cloud. No accounts. No ads.",
-            fontSize = 11.sp,
-            color = TextMuted,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
+    "All financial data is processed and stored locally on-device. No third-party data transmission. No accounts. No advertising.",
+    fontSize = 11.sp,
+    color = TextMuted,
+    textAlign = TextAlign.Center,
+    modifier = Modifier.fillMaxWidth()
+)
     }
 }
 
@@ -152,8 +152,8 @@ fun OnboardingAddStreams(
             .padding(24.dp)
     ) {
         Spacer(modifier = Modifier.height(48.dp))
-        Text("Add Your Streams", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = TextPrimary)
-        Text("What income sources do you have?", color = TextSecondary, fontSize = 14.sp)
+        Text("Add Your Revenue Streams", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = TextPrimary)
+Text("Define each independent source of business revenue.", color = TextSecondary, fontSize = 14.sp)
         Spacer(modifier = Modifier.height(32.dp))
 
         // Type selector
@@ -241,12 +241,12 @@ fun OnboardingAddStreams(
                 colors = ButtonDefaults.buttonColors(containerColor = Accent),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Text(
-                    "Launch My Dashboard →",
-                    color = Background,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
+               Text(
+    "Launch Revenue Dashboard →",
+    color = Background,
+    fontWeight = FontWeight.Bold,
+    fontSize = 16.sp
+)
             }
         }
 
