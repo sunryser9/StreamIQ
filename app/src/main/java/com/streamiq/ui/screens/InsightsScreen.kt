@@ -305,7 +305,7 @@ private fun generateInsights(
 
     return insights
 }
-}
+
 
 private fun getWeeklyChallenge(summaries: List<StreamSummary>, streak: Int): String {
     val weakest = summaries.filter { it.monthAmount > 0 }.minByOrNull { it.monthAmount }
