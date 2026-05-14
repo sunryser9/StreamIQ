@@ -69,7 +69,7 @@ fun StreamScoreScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
         containerColor = bg,
         topBar = {
             TopAppBar(
-                title = { Text("Stream Scores ⚡", color = textPrimary, fontWeight = FontWeight.Bold) },
+                title = { Text("Stream Performance Index", color = textPrimary, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, "Back", tint = textSecondary)
@@ -94,15 +94,15 @@ fun StreamScoreScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                     containerColor = Accent.copy(alpha = 0.1f))
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("⚡ What is Stream Score?",
-                        fontWeight = FontWeight.Bold, fontSize = 16.sp, color = textPrimary)
-                    Spacer(Modifier.height(6.dp))
-                    Text(
-                        "Each stream gets a score 0–100 based on 3 factors: " +
-                        "consistency (how often it earns), growth (trending up or down?), " +
-                        "and reliability (streak length). Use this to decide where to invest your energy.",
-                        fontSize = 13.sp, color = textSecondary, lineHeight = 18.sp
-                    )
+                   Text("Stream Performance Index — How It Works",
+                  fontWeight = FontWeight.Bold, fontSize = 16.sp, color = textPrimary)
+                 Spacer(Modifier.height(6.dp))
+                 Text(
+               "Each revenue stream is scored 0–100 across 3 operational metrics: " +
+               "consistency (frequency of revenue activity), growth (month-over-month trend), " +
+            "and reliability (consecutive active days). Use this index to allocate your time and resources with precision.",
+             fontSize = 13.sp, color = textSecondary, lineHeight = 18.sp
+     )
                 }
             }
 
@@ -118,17 +118,17 @@ fun StreamScoreScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("👑", fontSize = 28.sp)
+                       Text("★", fontSize = 28.sp)
                         Column {
-                            Text("DOUBLE DOWN ON THIS",
-                                fontSize = 10.sp, fontWeight = FontWeight.Bold,
-                                color = Green, letterSpacing = 1.sp)
-                            Text(topStream.first.stream.name,
-                                fontSize = 18.sp, fontWeight = FontWeight.Bold,
-                                color = textPrimary)
-                            Text("Score ${topStream.second}/100 — your strongest stream this month",
-                                fontSize = 12.sp, color = textSecondary)
-                        }
+    Text("HIGHEST PERFORMANCE INDEX",
+        fontSize = 10.sp, fontWeight = FontWeight.Bold,
+        color = Green, letterSpacing = 1.sp)
+    Text(topStream.first.stream.name,
+        fontSize = 18.sp, fontWeight = FontWeight.Bold,
+        color = textPrimary)
+    Text("Index ${topStream.second}/100 — your highest performing revenue stream this period",
+        fontSize = 12.sp, color = textSecondary)
+}
                     }
                 }
             }
@@ -149,13 +149,13 @@ fun StreamScoreScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                         }
                         Spacer(Modifier.height(6.dp))
                         deadStreams.forEach { (summary, score) ->
-                            Text("• ${summary.stream.name}: score $score/100 — barely earning",
-                                fontSize = 13.sp, color = textSecondary)
-                        }
-                        Spacer(Modifier.height(8.dp))
-                        Text("Consider reviving these or focusing energy elsewhere.",
-                            fontSize = 12.sp, color = textSecondary,
-                            fontStyle = androidx.compose.ui.text.font.FontStyle.Italic)
+    Text("• ${summary.stream.name}: index $score/100 — below minimum performance threshold",
+        fontSize = 13.sp, color = textSecondary)
+}
+Spacer(Modifier.height(8.dp))
+Text("Review these streams for reactivation or reallocation of operational resources.",
+    fontSize = 12.sp, color = textSecondary,
+    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic)
                     }
                 }
             }
@@ -204,13 +204,13 @@ fun StreamScoreScreen(viewModel: StreamIQViewModel, onBack: () -> Unit) {
                     Text("Score Guide", fontWeight = FontWeight.Bold,
                         fontSize = 14.sp, color = textPrimary)
                     Spacer(Modifier.height(8.dp))
-                    listOf(
-                        Triple("80–100", "🔥 Thriving", Color(0xFF00E676)),
-                        Triple("60–79",  "📈 Growing",  Color(0xFF69F0AE)),
-                        Triple("40–59",  "😐 Stable",   Color(0xFFFFD700)),
-                        Triple("20–39",  "⚠️ Weak",     Color(0xFFFF9800)),
-                        Triple("0–19",   "💀 Dead",     Color(0xFFFF5252))
-                    ).forEach { (range, label, color) ->
+                   listOf(
+    Triple("80–100", "▲ High Performance", Color(0xFF00E676)),
+    Triple("60–79",  "▲ Above Average",    Color(0xFF69F0AE)),
+    Triple("40–59",  "▲ Stable",           Color(0xFFFFD700)),
+    Triple("20–39",  "▲ Underperforming",  Color(0xFFFF9800)),
+    Triple("0–19",   "▲ Critical",         Color(0xFFFF5252))
+).forEach { (range, label, color) ->
                         Row(
                             modifier = Modifier.fillMaxWidth().padding(vertical = 3.dp),
                             horizontalArrangement = Arrangement.SpaceBetween
@@ -315,7 +315,7 @@ private fun StreamScoreCard(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 ScoreStat("This month", formatMoney(summary.monthAmount), textSecondary, textPrimary)
-                ScoreStat("Streak", "${summary.streak}d 🔥", textSecondary, textPrimary)
+               ScoreStat("Active Days", "${summary.streak}d", textSecondary, textPrimary)
                 ScoreStat("Trend",
                     if (summary.trend >= 0) "+${String.format("%.0f", summary.trend)}%"
                     else "${String.format("%.0f", summary.trend)}%",
@@ -352,10 +352,10 @@ private fun ScoreStat(label: String, value: String, labelColor: Color, valueColo
 }
 
 private fun getStreamTip(summary: StreamSummary, score: Int): String = when {
-    score >= 80 -> "Thriving. Scale this — more content, more clients, more hours."
-    score >= 60 && summary.trend > 0 -> "Growing fast. Keep your current pace."
-    score >= 40 && summary.trend < 0 -> "Stable but declining. Post/work more consistently."
-    score < 20 && summary.streak == 0 -> "No income in days. One small action today can restart momentum."
-    score < 30 -> "Weak performance. Consider: is this worth your time vs other streams?"
+    score >= 80 -> "High performance index. Prioritize scaling this stream — increase output volume and client acquisition."
+    score >= 60 && summary.trend > 0 -> "Positive growth trajectory. Maintain current operational cadence."
+    score >= 40 && summary.trend < 0 -> "Stable but declining. Increase activity frequency to reverse the trend."
+    score < 20 && summary.streak == 0 -> "No revenue recorded in recent days. Schedule one revenue action today to reactivate this stream."
+    score < 30 -> "Underperforming relative to your other streams. Assess time-to-revenue ratio against higher performing streams."
     else -> ""
 }
