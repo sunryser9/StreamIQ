@@ -173,8 +173,8 @@ fun VoiceBotScreen(
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Accent)
                     }
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("💬 Voice Assistant", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = textColor)
-                        Text("Talk to StreamIQ", fontSize = 12.sp, color = Accent)
+                       Text("Voice Revenue Logging", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = textColor)
+                       Text("Log revenue entries by voice", fontSize = 12.sp, color = Accent)
                     }
                     Spacer(Modifier.width(48.dp))
                 }
@@ -203,24 +203,24 @@ fun VoiceBotScreen(
                         ) {
                             Text("🎙️", fontSize = 56.sp)
                             Text(
-                                "Your AI Income Assistant",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = textColor,
-                                textAlign = TextAlign.Center
-                            )
-                            Text(
-                                "Tap the mic and say:\n\"I made 80 dollars from freelance\"",
-                                fontSize = 14.sp,
-                                color = if (isDark) TextSecondary else Color(0xFF666666),
-                                textAlign = TextAlign.Center
-                            )
+                            "Voice Revenue Entry",
+                             fontSize = 20.sp,
+                              fontWeight = FontWeight.Bold,
+                            color = textColor,
+                             textAlign = TextAlign.Center
+      )
+                           Text(
+                            "Tap the mic and say:\n\"I made 80 dollars from consulting\"",
+                              fontSize = 14.sp,
+                             color = if (isDark) TextSecondary else Color(0xFF666666),
+                              textAlign = TextAlign.Center
+)
                             Spacer(Modifier.height(8.dp))
                             // Hint chips
-                            listOf(
-                                "📊 Get monthly total",
-                                "💰 Log earnings by voice",
-                                "🔥 Check your streak"
+                           listOf(
+                           "📊 Get monthly revenue total",
+                             "▲ Log revenue entry by voice",
+                          "★ Check active days count"
                             ).forEach { hint ->
                                 Box(
                                     modifier = Modifier
@@ -248,7 +248,7 @@ fun VoiceBotScreen(
                                     .background(Accent),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text("💰", fontSize = 16.sp)
+                               Text("▲", fontSize = 16.sp)
                             }
                             Spacer(Modifier.width(8.dp))
                         }
