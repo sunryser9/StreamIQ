@@ -4,6 +4,8 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
+  permissions:
+  contents: write
 
 jobs:
   build:
@@ -39,8 +41,11 @@ jobs:
             -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }} \
             --stacktrace
 
-      - name: Upload AAB
-        uses: actions/upload-artifact@v4
+            - name: Create Release and Upload AAB
+        uses: softprops/action-gh-release@v2
         with:
-          name: StreamIQ-release
-          path: app/build/outputs/bundle/release/app-release.aab
+          tag_name: build-${{ github.run_number }}
+          name: Build ${{ github.run_number }}
+          files: app/build/outputs/bundle/release/app-release.aab
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
